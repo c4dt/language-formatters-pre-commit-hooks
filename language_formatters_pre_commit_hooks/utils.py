@@ -45,11 +45,13 @@ def download_url(url, file_name=None):
     if os.path.exists(final_file):
         return final_file
 
-    r = requests.get(url, stream=True)
+    print('Downloading: {} / {}'.format(url, file_name))
+
+    r = requests.get(url, stream=False)
     tmp_file = '{}_tmp'.format(final_file)
     with open(tmp_file, mode='wb') as f:
         # Copy on a temporary file in case of issues while downloading the file
-        shutil.copyfileobj(r.raw, f)
+        f.write(r.content)
 
     os.rename(tmp_file, final_file)
     return final_file
